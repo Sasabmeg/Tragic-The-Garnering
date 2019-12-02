@@ -1,0 +1,21 @@
+package net.fodev.tragic;
+
+import java.util.List;
+
+public class CardFactory {
+    private List<CardPrototype> prototypes;
+
+    public CardFactory(List<CardPrototype> prototypes) {
+        this.prototypes = prototypes;
+    }
+
+    public Card cardByName(String name) {
+        for (CardPrototype proto : prototypes) {
+            if (proto.getName().equalsIgnoreCase(name)) {
+                return new Card(name, proto);
+            }
+        }
+        return null;
+     }
+
+}
