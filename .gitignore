@@ -1,3 +1,5 @@
-build/*
+build/classes/*
+build/resources/*
+build/tmp/*
 .gradle/*
 .idea/workspace.xml
