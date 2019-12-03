@@ -7,6 +7,17 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'net.fodev.tragic.MainApp'
+    }
+    baseName = project.name + '-all'
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     jcenter()
     //maven { url "http://dl.bintray.com/jmonkeyengine/org.jmonkeyengine" }
@@ -15,6 +26,7 @@ repositories {
 
 gradle.startParameter.showStacktrace = org.gradle.api.logging.configuration.ShowStacktrace.ALWAYS
 
+/*
 def jme3 = [v:'3.2.0-stable', g:'org.jmonkeyengine']
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -22,3 +34,17 @@ dependencies {
     runtime "${jme3.g}:jme3-desktop:${jme3.v}"
     runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
 }
+
+ */
+def jme3 = [v:'3.2.0-stable', g:'org.jmonkeyengine']
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile files('libs/jme3-core.jar', 'libs/jme3-desktop.jar', 'libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
+    //compile files('libs/lwjgl64.dll', 'libs/OpenAL64.dll')
+    runtime files('libs/jme3-desktop.jar', 'libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
+    //runtime files('libs/lwjgl64.dll', 'libs/OpenAL64.dll')
+    //runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
+    //runtime files('libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
+}
+
