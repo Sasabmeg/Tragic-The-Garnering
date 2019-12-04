@@ -41,10 +41,6 @@ def jme3 = [v:'3.2.0-stable', g:'org.jmonkeyengine']
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile files('libs/jme3-core.jar', 'libs/jme3-desktop.jar', 'libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
-    //compile files('libs/lwjgl64.dll', 'libs/OpenAL64.dll')
     runtime files('libs/jme3-desktop.jar', 'libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
-    //runtime files('libs/lwjgl64.dll', 'libs/OpenAL64.dll')
-    //runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
-    //runtime files('libs/jme3-lwjgl.jar', 'libs/lwjgl.jar')
 }
 

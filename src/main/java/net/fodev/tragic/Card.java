@@ -1,12 +1,17 @@
 package net.fodev.tragic;
 
+import com.jme3.asset.TextureKey;
+import com.jme3.math.Vector2f;
+import com.jme3.texture.Texture2D;
+
 public class Card {
     String name;
-    protected float posX;
-    protected float posY;
-    protected float width;
-    protected float height;
-    protected float rotation;
+    private float posX;
+    private float posY;
+    private float posZ;
+    private float width;
+    private float height;
+    private float rotation;
     CardPrototype prototype;
 
     public Card(String name, CardPrototype prototype) {
@@ -19,51 +24,68 @@ public class Card {
         rotation = 0;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getImageFileName() {
+    String getImageFileName() {
         return prototype.getImageFileName();
     }
 
-    public float getWidth() {
+    float getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    void setWidth(float width) {
         this.width = width;
     }
 
-    public float getHeight() {
+    float getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    void setHeight(float height) {
         this.height = height;
     }
 
-    public float getPosX() {
+    float getPosX() {
         return posX;
     }
 
-    public void setPosX(float posX) {
+    void setPosX(float posX) {
         this.posX = posX;
     }
 
-    public float getPosY() {
+    float getPosY() {
         return posY;
     }
 
-    public void setPosY(float posY) {
+    void setPosY(float posY) {
         this.posY = posY;
     }
 
-    public float getRotation() {
+    float getPosZ() {
+        return posZ;
+    }
+
+    void setPosZ(float posZ) {
+        this.posZ = posZ;
+    }
+
+    float getRotation() {
         return rotation;
     }
 
-    public void setRotation(float rotation) {
+    void setRotation(float rotation) {
         this.rotation = rotation;
+    }
+
+    public boolean isMouseOver(Vector2f mouse) {
+        if (posX - width / 2 <= mouse.x && mouse.x <= posX + width / 2
+            && posY - height / 2 <= mouse.y && mouse.y <= posY + height / 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

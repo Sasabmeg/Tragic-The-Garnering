@@ -7,28 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    protected int posX;
-    protected int posY;
-    protected int width;
-    protected int height;
+    private int posX;
+    private int posY;
+    private int width;
+    private int height;
 
-    protected float scaleFactor = 0.38f;
-    protected int spacing = 5;
-    protected float minRotation = -0.40f;
-    protected float maxRotation = 0.40f;
-    protected int maxCards = 10;
+    private float scaleFactor = 0.38f;
+    private float minRotation;
+    private float maxRotation;
+    private int maxCards;
 
     private List<Card> cards;
 
-    public Hand(int posX, int posY, int width, int height) {
+    Hand(int posX, int posY, int width, int height) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
         this.height = height;
         cards = new ArrayList<>();
+        maxCards = 10;
+        minRotation = -0.40f;
+        maxRotation = 0.40f;
     }
 
-    public void addCard(Card card) {
+    void addCard(Card card) {
         card.setWidth(240);
         card.setHeight(320);
         cards.add(card);
@@ -36,11 +38,13 @@ public class Hand {
     }
 
     private void recalcCardPositions() {
-        System.out.println("RECALCPOSITIONS");
+        int spacing = 5;
+
+        //System.out.println("RECALCPOSITIONS");
         float rotationScale = (float)cards.size() / maxCards;
         float minRot = minRotation * rotationScale;
         float maxRot = maxRotation * rotationScale;
-        System.out.println(String.format("%f - (%f, %f)", rotationScale, minRot, maxRot));
+        //System.out.println(String.format("%f - (%f, %f)", rotationScale, minRot, maxRot));
         for (int i = 0; i < cards.size(); i++) {
             Card card = cards.get(i);
             float cardWidth = card.getWidth() * scaleFactor;
@@ -96,25 +100,24 @@ public class Hand {
         }
     }
 
-    public int getWidth() {
+    int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    int getHeight() {
         return height;
     }
 
-    public int getPosX() {
+    int getPosX() {
         return posX;
     }
 
-    public int getPosY() {
+    int getPosY() {
         return posY;
     }
 
-    public void showCards(AssetManager assetManager, Node guiNode) {
-        for (int i = 0; i < cards.size(); i++) {
-            Card card = cards.get(i);
+    void showCards(AssetManager assetManager, Node guiNode) {
+        for (Card card : cards) {
             GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
             cardPic.setPosition(card.getPosX(), card.getPosY(), 1);
             cardPic.scaleImage(scaleFactor);

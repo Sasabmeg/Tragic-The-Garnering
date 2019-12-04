@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jMonkey3-Tragic.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jMonkey3_Tragic_main_jar</output-path>
+    <root id="archive" name="jMonkey3-Tragic.main.jar">
+      <element id="module-output" name="jMonkey3-Tragic.main" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jme3-core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jme3-desktop.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jme3-lwjgl.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
