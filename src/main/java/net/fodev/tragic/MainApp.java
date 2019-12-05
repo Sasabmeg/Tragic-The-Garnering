@@ -80,7 +80,7 @@ public class MainApp extends SimpleApplication {
         if (name.equals(lmbClick) && !keyPressed) {
             Vector2f mouse = inputManager.getCursorPosition();
             System.out.println(String.format("LMB clicked at (%.0f, %.0f)", mouse.x, mouse.y));
-            startHandSelector.mouseClick(mouse);
+            startHandSelector.mouseClick(mouse, guiNode);
         }
     };
 
@@ -140,7 +140,6 @@ public class MainApp extends SimpleApplication {
         startHandSelector.addCard(cardFactory.cardByName("Fan of Knives"));
         startHandSelector.addCard(cardFactory.cardByName("Silent Death"));
         startHandSelector.addCard(cardFactory.cardByName("Silent Running"));
-        StartHandSelector.debugEnabled = true;
         startHandSelector.showCards(assetManager, guiNode);
     }
 

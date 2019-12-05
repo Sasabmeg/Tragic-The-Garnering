@@ -68,29 +68,21 @@ public class StartHandSelector {
 
     void showCards(AssetManager assetManager, Node guiNode) {
         for (Card card : cards) {
-            GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
-            System.out.println(String.format("%s (%d, %d", card.getName(), cardPic.getSourceImageWidth(), cardPic.getSourceImageHeight()));
-            cardPic.setPosition(card.getPosX(), card.getPosY(), card.getPosZ());
-            cardPic.rotate(card.getRotation());
-            guiNode.attachChild(cardPic);
+            card.show(assetManager, guiNode);
+            card.activate(assetManager, guiNode);
+        }
+    }
 
-            if (debugEnabled) {
-                Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-                mat.setColor("Color", new ColorRGBA(0, 1, 0, 0.5f)); // 0.5f is the alpha value
-                mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                Geometry mouseRect = new Geometry("MouseRect", new Quad(card.getWidth(), card.getHeight()));
-                mouseRect.setMaterial(mat);
-                mouseRect.setLocalTranslation(card.getPosX() - card.getWidth() / 2, card.getPosY() - card.getHeight() / 2, card.getPosZ() - 0.01f);
-                guiNode.attachChild(mouseRect);
+    void mouseClick(Vector2f mouse, Node guiNode) {
+        for (Card card : cards) {
+            if (card.isMouseOver(mouse)) {
+                System.out.println(String.format("Starting Hand Selector: Mouse over card %s at (%.0f, %.0f)", card.getName(), mouse.x, mouse.y));
+                card.deActivate(guiNode);
             }
         }
     }
 
-    void mouseClick(Vector2f mouse) {
-        for (Card card : cards) {
-            if (card.isMouseOver(mouse)) {
-                System.out.println(String.format("Starting Hand Selector: Mouse over card %s at (%.0f, %.0f)", card.getName(), mouse.x, mouse.y));
-            }
-        }
+    void setCardInactive() {
+
     }
 }
