@@ -1,25 +1,22 @@
 package net.fodev.tragic;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.Quad;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StartHandSelector {
-    public static boolean debugEnabled = false;
-
     private int posX;
     private int posY;
     private int width;
     private int height;
+    private int depth = 5;
     private List<Card> cards;
+    private GuiPicture background;
+    private GuiPicture acceptButton;
 
     StartHandSelector(int posX, int posY, int width, int height) {
         this.posX = posX;
@@ -30,18 +27,35 @@ public class StartHandSelector {
     }
 
     void drawBackground(AssetManager assetManager, Node guiNode) {
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", new ColorRGBA(0, 0, 0, 0.66f)); // 0.5f is the alpha value
-        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        Geometry mouseRect = new Geometry("MouseRect", new Quad(width, height));
-        mouseRect.setMaterial(mat);
-        mouseRect.setLocalTranslation(posX, posY, 5);
-        guiNode.attachChild(mouseRect);
+        if (background == null || guiNode.getChildIndex(background) < 0) {
+            background = new GuiPicture("StartHandSelector" + "_background", assetManager, width, height, new ColorRGBA(0, 0, 0, 0.85f));
+            background.setBottomLeftPosition(posX, posY, depth - 0.01f);
+            guiNode.attachChild(background);
+        }
+    }
+
+    private void drawAcceptButton(AssetManager assetManager, Node guiNode) {
+        if (acceptButton == null || guiNode.getChildIndex(acceptButton) < 0) {
+            acceptButton = new GuiPicture("StartHandSelector" + "_acceptButton", assetManager, "interface/accept_button.png", true);
+            acceptButton.setCenterPosition(posX + width / 2, posY + acceptButton.getSourceImageHeight(), depth);
+            guiNode.attachChild(acceptButton);
+        }
+    }
+
+    void show(AssetManager assetManager, Node guiNode) {
+        drawBackground(assetManager, guiNode);
+        showCards(assetManager, guiNode);
+        drawAcceptButton(assetManager, guiNode);
+
+    }
+
+    void hide(Node guiNode) {
+
     }
 
     void addCard(Card card) {
         card.setWidth(257);
-        card.setHeight(360);
+        card.setHeight(366);
         cards.add(card);
         recalcCardPositions();
     }
@@ -52,7 +66,7 @@ public class StartHandSelector {
             Card card = cards.get(i);
             float cardX = posX + spacing;
             float totalWidth = width - spacing * 2;
-            float spaceBetweenCards = (totalWidth - cards.size() * card.getWidth());
+            float spaceBetweenCards = (totalWidth - (cards.size() * card.getWidth()));
             if (cards.size() > 1) {
                 spaceBetweenCards = spaceBetweenCards / (cards.size() - 1);
                 cardX += i * (card.getWidth() + spaceBetweenCards);
@@ -62,7 +76,7 @@ public class StartHandSelector {
             float cardY =  posY + height - spacing;
             card.setPosX(cardX + card.getWidth() / 2);
             card.setPosY(cardY - card.getHeight() / 2);
-            card.setPosZ(10);
+            card.setPosZ(depth + 1);
         }
     }
 
@@ -80,9 +94,9 @@ public class StartHandSelector {
                 card.deActivate(guiNode);
             }
         }
-    }
-
-    void setCardInactive() {
+        if (acceptButton != null && acceptButton.isMouseOver(mouse)) {
+            System.out.println(String.format("Starting Hand Selector: Mouse over Accept Button at (%.0f, %.0f)", mouse.x, mouse.y));
+        }
 
     }
 }

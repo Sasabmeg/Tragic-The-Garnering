@@ -119,7 +119,7 @@ public class Hand {
     void showCards(AssetManager assetManager, Node guiNode) {
         for (Card card : cards) {
             GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
-            cardPic.setPosition(card.getPosX(), card.getPosY(), 1);
+            cardPic.setCenterPosition(card.getPosX(), card.getPosY(), 1);
             cardPic.scaleImage(scaleFactor);
             cardPic.rotate(card.getRotation());
             guiNode.attachChild(cardPic);

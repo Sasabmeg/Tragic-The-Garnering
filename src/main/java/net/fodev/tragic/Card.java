@@ -108,7 +108,7 @@ public class Card {
         if (cardImage == null || guiNode.getChildIndex(cardImage) < 0) {
             cardImage = new GuiPicture(name, assetManager, getImageFileName(), true);
             System.out.println(String.format("%s (%d, %d", name, cardImage.getSourceImageWidth(), cardImage.getSourceImageHeight()));
-            cardImage.setPosition(posX, posY, posZ);
+            cardImage.setCenterPosition(posX, posY, posZ);
             cardImage.rotate(rotation);
             guiNode.attachChild(cardImage);
         }
@@ -129,7 +129,7 @@ public class Card {
         setActive(true);
         if (activeImage == null || guiNode.getChildIndex(activeImage) < 0) {
             activeImage = new GuiPicture(name + "_activeGlow", assetManager, width, height, new ColorRGBA(0, 1, 0, 0.5f));
-            activeImage.setPosition(posX, posY, posZ - 0.01f);
+            activeImage.setCenterPosition(posX, posY, posZ - 0.01f);
             guiNode.attachChild(activeImage);
         }
     }

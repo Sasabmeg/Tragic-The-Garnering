@@ -1,11 +1,8 @@
 package net.fodev.tragic;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
@@ -37,8 +34,8 @@ public class MainApp extends SimpleApplication {
         settings.put("Width", width);
         settings.put("Height", height);
         settings.put("Title", "Tragic: the garnering.");
+        settings.setFrameRate(60);
         app.setSettings(settings);
-
         app.start();
     }
 
@@ -57,7 +54,7 @@ public class MainApp extends SimpleApplication {
 
             /*
             GuiPicture fanOfKnives = new GuiPicture("Fan of knives", assetManager, "cards/card_act_fanOfKnives.png", true);
-            fanOfKnives.setPosition(settings.getWidth() / 2, settings.getHeight() / 2, 2);
+            fanOfKnives.setCenterPosition(settings.getWidth() / 2, settings.getHeight() / 2, 2);
             guiNode.attachChild(fanOfKnives);
             */
             //showCard(hand.getTopCard());
@@ -130,17 +127,16 @@ public class MainApp extends SimpleApplication {
 
     private void initBackground() {
         GuiPicture background = new GuiPicture("Background", assetManager, "dev/base2.png", true);
-        background.setPosition(width / 2, height / 2, -100);
+        background.setCenterPosition(width / 2, height / 2, -100);
         guiNode.attachChild(background);
     }
 
     private void initStartHandSelector() {
         startHandSelector = new StartHandSelector(190, 150, 900, 500);
-        startHandSelector.drawBackground(assetManager, guiNode);
         startHandSelector.addCard(cardFactory.cardByName("Fan of Knives"));
         startHandSelector.addCard(cardFactory.cardByName("Silent Death"));
         startHandSelector.addCard(cardFactory.cardByName("Silent Running"));
-        startHandSelector.showCards(assetManager, guiNode);
+        startHandSelector.show(assetManager, guiNode);
     }
 
     private void initHand() {
@@ -175,7 +171,7 @@ public class MainApp extends SimpleApplication {
     private void showCard(Card card) {
         if (card != null) {
             GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
-            cardPic.setPosition(card.getPosX(), card.getPosY(), 1);
+            cardPic.setCenterPosition(card.getPosX(), card.getPosY(), 1);
             guiNode.attachChild(cardPic);
         } else {
             System.out.println("Warning: showCard() - card is null.");

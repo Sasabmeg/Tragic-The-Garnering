@@ -5,6 +5,7 @@ import com.jme3.asset.TextureKey;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -61,25 +62,42 @@ public class GuiPicture extends Node {
         return super.rotate(xAngle, yAngle, zAngle);
     }
 
-    public void rotate(float zAngle) {
+    void rotate(float zAngle) {
         super.rotate(0, 0, -zAngle);
     }
 
-    public void setPosition(float x, float y, float z) {
+    void setCenterPosition(float x, float y, float z) {
         setLocalTranslation(x, y, z);
     }
 
-    public int getSourceImageWidth() {
+    void setBottomLeftPosition(float x, float y, float z) {
+        setLocalTranslation(x + sourceImageWidth * getLocalScale().x / 2, y + sourceImageHeight * getLocalScale().y / 2, z);
+    }
+
+    int getSourceImageWidth() {
         return sourceImageWidth;
     }
 
-    public int getSourceImageHeight() {
+    int getSourceImageHeight() {
         return sourceImageHeight;
     }
 
-    public void scaleImage(float factor) {
+    void scaleImage(float factor) {
         picture.setWidth(sourceImageWidth * factor);
         picture.setHeight(sourceImageHeight * factor);
         picture.setPosition(- sourceImageWidth / 2 * factor, - sourceImageHeight / 2 * factor);
+    }
+
+    boolean isMouseOver(Vector2f mouse) {
+        float posX = this.getLocalTranslation().x;
+        float posY = this.getLocalTranslation().y;
+        float width = picture.getLocalScale().x;
+        float height = picture.getLocalScale().y;
+        if (posX - width / 2 <= mouse.x && mouse.x <= posX + width / 2
+                && posY - height / 2 <= mouse.y && mouse.y <= posY + height / 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
