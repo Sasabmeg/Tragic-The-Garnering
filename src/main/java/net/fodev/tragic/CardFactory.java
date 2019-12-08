@@ -16,6 +16,9 @@ public class CardFactory {
             }
         }
         return null;
-     }
+    }
 
+    public Card cardByIndex(int index) {
+        return new Card(prototypes.get(index).getName(), prototypes.get(index));
+    }
 }

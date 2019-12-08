@@ -50,14 +50,24 @@ public class StartHandSelector {
     }
 
     void hide(Node guiNode) {
-
+        for (Card card : cards) {
+            card.hide(guiNode);
+        }
+        background.hide(guiNode);
+        background = null;
+        acceptButton.hide(guiNode);
+        acceptButton = null;
     }
 
     void addCard(Card card) {
-        card.setWidth(257);
-        card.setHeight(366);
-        cards.add(card);
-        recalcCardPositions();
+        if (card != null) {
+            card.setWidth(257);
+            card.setHeight(366);
+            cards.add(card);
+            recalcCardPositions();
+        } else {
+            System.out.println("StartHandSelector - addCard(null)");
+        }
     }
 
     private void recalcCardPositions() {
@@ -87,15 +97,33 @@ public class StartHandSelector {
         }
     }
 
-    void mouseClick(Vector2f mouse, Node guiNode) {
-        for (Card card : cards) {
+    void mouseClick(Vector2f mouse, AssetManager assetManager, Node guiNode, Hand hand, Deck deck) {
+        for (int i = 0; i < cards.size(); i++) {
+            Card card = cards.get(i);
             if (card.isMouseOver(mouse)) {
                 System.out.println(String.format("Starting Hand Selector: Mouse over card %s at (%.0f, %.0f)", card.getName(), mouse.x, mouse.y));
-                card.deActivate(guiNode);
+                card.hide(guiNode);
+                //card.deActivate(guiNode);
+
+                //Card tempCard = card;
+                Card newCard = deck.popFirst();
+                cards.set(i, newCard);
+                newCard.setWidth(257);
+                newCard.setHeight(366);
+                recalcCardPositions();
+                newCard.show(assetManager, guiNode);
+                deck.addCardAtRandomIndex(card);
+                System.out.println(deck.listCards());
             }
         }
         if (acceptButton != null && acceptButton.isMouseOver(mouse)) {
             System.out.println(String.format("Starting Hand Selector: Mouse over Accept Button at (%.0f, %.0f)", mouse.x, mouse.y));
+            for (Card card : cards) {
+                hand.addCard(card);
+            }
+            hide(guiNode);
+            cards.clear();
+            hand.showCards(assetManager, guiNode);
         }
 
     }

@@ -100,4 +100,10 @@ public class GuiPicture extends Node {
             return false;
         }
     }
+
+    void hide(Node guiNode) {
+        if (guiNode.getChildIndex(this) >= 0) {
+            guiNode.detachChild(this);
+        }
+    }
 }

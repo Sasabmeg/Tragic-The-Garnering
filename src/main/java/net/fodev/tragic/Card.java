@@ -107,7 +107,7 @@ public class Card {
         setShown(true);
         if (cardImage == null || guiNode.getChildIndex(cardImage) < 0) {
             cardImage = new GuiPicture(name, assetManager, getImageFileName(), true);
-            System.out.println(String.format("%s (%d, %d", name, cardImage.getSourceImageWidth(), cardImage.getSourceImageHeight()));
+            System.out.println(String.format("Card.show() - %s (%d, %d)", name, cardImage.getSourceImageWidth(), cardImage.getSourceImageHeight()));
             cardImage.setCenterPosition(posX, posY, posZ);
             cardImage.rotate(rotation);
             guiNode.attachChild(cardImage);
@@ -122,6 +122,9 @@ public class Card {
         setShown(false);
         if (cardImage != null && guiNode.getChildIndex(cardImage) >= 0) {
             guiNode.detachChild(cardImage);
+        }
+        if (isActive()) {
+            deActivate(guiNode);
         }
     }
 

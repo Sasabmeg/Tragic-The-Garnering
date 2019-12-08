@@ -21,6 +21,7 @@ public class MainApp extends SimpleApplication {
 
     private CardFactory cardFactory;
     private Hand hand;
+    private Deck deck;
     private StartHandSelector startHandSelector;
     private String lmbClick = "LMB";
 
@@ -46,18 +47,10 @@ public class MainApp extends SimpleApplication {
             initCardPrototypes();
             initBackground();
             initHand();
-            initStartHandSelector();
-
+            initDeck();
+            initStartHandSelector(deck);
             initKeys();
 
-            Vector2f mouse = inputManager.getCursorPosition();
-
-            /*
-            GuiPicture fanOfKnives = new GuiPicture("Fan of knives", assetManager, "cards/card_act_fanOfKnives.png", true);
-            fanOfKnives.setCenterPosition(settings.getWidth() / 2, settings.getHeight() / 2, 2);
-            guiNode.attachChild(fanOfKnives);
-            */
-            //showCard(hand.getTopCard());
             hand.showCards(assetManager, guiNode);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,19 +58,27 @@ public class MainApp extends SimpleApplication {
 
     }
 
+    private void initDeck() {
+        deck = new Deck(100, 100, 100, 100);
+        for (int i = 0; i < 10; i++) {
+            deck.addCard(cardFactory.cardByIndex(i));
+        }
+        System.out.println(deck.listCards());
+        deck.shuffle(10);
+        System.out.println(deck.listCards());
+    }
+
     private void initKeys() {
         inputManager.addMapping(lmbClick, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        System.out.println("Added mappings.");
         inputManager.addListener(actionListener, lmbClick);
         //inputManager.addListener(analogListener, lmbClick);
-        System.out.println("Added listeners.");
     }
 
     private final ActionListener actionListener = (name, keyPressed, tpf) -> {
         if (name.equals(lmbClick) && !keyPressed) {
             Vector2f mouse = inputManager.getCursorPosition();
             System.out.println(String.format("LMB clicked at (%.0f, %.0f)", mouse.x, mouse.y));
-            startHandSelector.mouseClick(mouse, guiNode);
+            startHandSelector.mouseClick(mouse, assetManager, guiNode, hand, deck);
         }
     };
 
@@ -121,7 +122,19 @@ public class MainApp extends SimpleApplication {
         protos.add(new CardPrototype("Stealthboy", "cards/card_act_stealthboy.png"));
         protos.add(new CardPrototype("Deadly Poison", "cards/card_act_deadlyPoison.png"));
         protos.add(new CardPrototype("Wakizashi Blade", "cards/card_weap_wakizashiBlade.png"));
-
+        protos.add(new CardPrototype("Enclave Flamer", "cards/card_unit_enclaveFlamer.png"));
+        protos.add(new CardPrototype("Fire Gecko", "cards/card_unit_fireGecko.png"));
+        protos.add(new CardPrototype("Golden Gecko", "cards/card_unit_goldenGecko.png"));
+        protos.add(new CardPrototype("Huge Radscorpion", "cards/card_unit_hugeRadscorpion.png"));
+        protos.add(new CardPrototype("klamath Tamer", "cards/card_unit_klamathTamer.png"));
+        protos.add(new CardPrototype("Klamath Trapper", "cards/card_unit_klamathTrapper.png"));
+        protos.add(new CardPrototype("Little Gecko", "cards/card_unit_littleGecko.png"));
+        protos.add(new CardPrototype("Mutated Mantis", "cards/card_unit_mutatedMantis.png"));
+        protos.add(new CardPrototype("Mutated Molerat", "cards/card_unit_mutatedMolerat.png"));
+        protos.add(new CardPrototype("Mutated Pigrat", "cards/card_unit_mutatedPigRat.png"));
+        protos.add(new CardPrototype("Stray Dog", "cards/card_unit_strayDog.png"));
+        protos.add(new CardPrototype("Wild Brahmin", "cards/card_unit_wildBrahmin.png"));
+        protos.add(new CardPrototype("Vault Officer", "cards/card_unit_vaultOfficer.png"));
         cardFactory = new CardFactory(protos);
     }
 
@@ -131,21 +144,23 @@ public class MainApp extends SimpleApplication {
         guiNode.attachChild(background);
     }
 
-    private void initStartHandSelector() {
+    private void initStartHandSelector(Deck deck) {
         startHandSelector = new StartHandSelector(190, 150, 900, 500);
-        startHandSelector.addCard(cardFactory.cardByName("Fan of Knives"));
-        startHandSelector.addCard(cardFactory.cardByName("Silent Death"));
-        startHandSelector.addCard(cardFactory.cardByName("Silent Running"));
+        startHandSelector.addCard(deck.popFirst());
+        startHandSelector.addCard(deck.popFirst());
+        startHandSelector.addCard(deck.popFirst());
+
+//        startHandSelector.addCard(cardFactory.cardByName("Silent Death"));
         startHandSelector.show(assetManager, guiNode);
     }
 
     private void initHand() {
         hand = new Hand(390, 0, 470, 115);
         //hand = new Hand(90, 150, 970, 415);
-        hand.addCard(cardFactory.cardByName("Fan of Knives"));
-        hand.addCard(cardFactory.cardByName("Silent Death"));
-        hand.addCard(cardFactory.cardByName("Silent Running"));
-        hand.addCard(cardFactory.cardByName("Backstab"));
+        //hand.addCard(cardFactory.cardByName("Fan of Knives"));
+        //hand.addCard(cardFactory.cardByName("Silent Death"));
+        //hand.addCard(cardFactory.cardByName("Silent Running"));
+        //hand.addCard(cardFactory.cardByName("Backstab"));
         /*hand.addCard(cardFactory.cardByName("Betrayal"));
         /*
         hand.addCard(cardFactory.cardByName("Shiv"));
