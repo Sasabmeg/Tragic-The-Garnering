@@ -101,19 +101,21 @@ public class StartHandSelector {
         for (int i = 0; i < cards.size(); i++) {
             Card card = cards.get(i);
             if (card.isMouseOver(mouse)) {
-                System.out.println(String.format("Starting Hand Selector: Mouse over card %s at (%.0f, %.0f)", card.getName(), mouse.x, mouse.y));
-                card.hide(guiNode);
-                //card.deActivate(guiNode);
-
-                //Card tempCard = card;
-                Card newCard = deck.popFirst();
-                cards.set(i, newCard);
-                newCard.setWidth(257);
-                newCard.setHeight(366);
-                recalcCardPositions();
-                newCard.show(assetManager, guiNode);
-                deck.addCardAtRandomIndex(card);
-                System.out.println(deck.listCards());
+                System.out.println(String.format("StartHandSelector - Mouse over card %s at (%.0f, %.0f)", card.getName(), mouse.x, mouse.y));
+                if (card.isActive()) {
+                    System.out.println("StartHandSelector - Replacing card: " + card.getName());
+                    card.hide(guiNode);
+                    Card newCard = deck.popFirst();
+                    cards.set(i, newCard);
+                    newCard.setWidth(257);
+                    newCard.setHeight(366);
+                    recalcCardPositions();
+                    newCard.show(assetManager, guiNode);
+                    deck.addCardAtRandomIndex(card);
+                    System.out.println(deck.listCards());
+                } else {
+                    System.out.println("StartHandSelector - Card is inactive, cannot replace.");
+                }
             }
         }
         if (acceptButton != null && acceptButton.isMouseOver(mouse)) {
