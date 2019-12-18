@@ -1,9 +1,10 @@
-package net.fodev.tragic;
+package net.fodev.tragic.core;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
+import net.fodev.tragic.ui.GuiPicture;
 
 public class Card {
     String name;
@@ -15,9 +16,14 @@ public class Card {
     private float rotation;
     private boolean active;
     private boolean shown;
-    CardPrototype prototype;
+    private float scale = 1;
+    private CardPrototype prototype;
     private GuiPicture cardImage;
     private GuiPicture activeImage;
+    private GuiPicture apImage;
+    private GuiPicture hpImage;
+    private GuiPicture damageImage;
+    private GuiPicture armorImage;
 
     public Card(String name, CardPrototype prototype) {
         this.name = name;
@@ -49,6 +55,13 @@ public class Card {
     }
     void setHeight(float height) {
         this.height = height;
+    }
+
+    float getScale() {
+        return scale;
+    }
+    void setScale(float scale) {
+        this.scale = scale;
     }
 
     float getPosX() {
@@ -107,11 +120,15 @@ public class Card {
         setShown(true);
         if (cardImage == null || guiNode.getChildIndex(cardImage) < 0) {
             cardImage = new GuiPicture(name, assetManager, getImageFileName(), true);
-            System.out.println(String.format("Card.show() - %s (%d, %d)", name, cardImage.getSourceImageWidth(), cardImage.getSourceImageHeight()));
-            cardImage.setCenterPosition(posX, posY, posZ);
-            cardImage.rotate(rotation);
+            cardImage.scale(scale);
             guiNode.attachChild(cardImage);
         }
+        if (cardImage != null) {
+            cardImage.setCenterPosition(posX, posY, posZ);
+            cardImage.rotate(rotation);
+        }
+        System.out.println(String.format("Card.show() - %-20s Size: (%4d, %4d); Center: (%4d, %4d); Rotation: %f; Scale: %f",
+                name, cardImage.getSourceImageWidth(), cardImage.getSourceImageHeight(), (int)posX, (int)posY, rotation, scale));
         //  if it's active, add card glow to GUI, unless already exists there
         if (isActive()) {
             activate(assetManager, guiNode);
@@ -133,6 +150,7 @@ public class Card {
         if (activeImage == null || guiNode.getChildIndex(activeImage) < 0) {
             activeImage = new GuiPicture(name + "_activeGlow", assetManager, width, height, new ColorRGBA(0, 1, 0, 0.5f));
             activeImage.setCenterPosition(posX, posY, posZ - 0.01f);
+            activeImage.scale(scale);
             guiNode.attachChild(activeImage);
         }
     }

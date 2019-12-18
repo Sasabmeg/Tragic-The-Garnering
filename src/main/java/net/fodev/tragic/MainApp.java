@@ -11,6 +11,8 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.jme3.system.AppSettings;
+import net.fodev.tragic.core.*;
+import net.fodev.tragic.ui.GuiPicture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +66,7 @@ public class MainApp extends SimpleApplication {
             deck.addCard(cardFactory.cardByIndex(i));
         }
         System.out.println(deck.listCards());
-        deck.shuffle(10);
+        //deck.shuffle(10);
         System.out.println(deck.listCards());
     }
 
@@ -157,13 +159,14 @@ public class MainApp extends SimpleApplication {
     private void initHand() {
         hand = new Hand(390, 0, 470, 115);
         //hand = new Hand(90, 150, 970, 415);
-        //hand.addCard(cardFactory.cardByName("Fan of Knives"));
-        //hand.addCard(cardFactory.cardByName("Silent Death"));
-        //hand.addCard(cardFactory.cardByName("Silent Running"));
-        //hand.addCard(cardFactory.cardByName("Backstab"));
-        /*hand.addCard(cardFactory.cardByName("Betrayal"));
+        hand.addCard(cardFactory.cardByName("Fan of Knives"));
+        hand.addCard(cardFactory.cardByName("Silent Death"));
+        hand.addCard(cardFactory.cardByName("Silent Running"));
+        hand.addCard(cardFactory.cardByName("Backstab"));
+        hand.addCard(cardFactory.cardByName("Betrayal"));
         /*
         hand.addCard(cardFactory.cardByName("Shiv"));
+        /*
         hand.addCard(cardFactory.cardByName("Stealthboy"));
         hand.addCard(cardFactory.cardByName("Deadly Poison"));
         hand.addCard(cardFactory.cardByName("Wakizashi Blade"));
@@ -181,15 +184,5 @@ public class MainApp extends SimpleApplication {
         mouseRect.setMaterial(mat);
         mouseRect.setLocalTranslation(posX, posY, posZ);
         guiNode.attachChild(mouseRect);
-    }
-
-    private void showCard(Card card) {
-        if (card != null) {
-            GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
-            cardPic.setCenterPosition(card.getPosX(), card.getPosY(), 1);
-            guiNode.attachChild(cardPic);
-        } else {
-            System.out.println("Warning: showCard() - card is null.");
-        }
     }
 }

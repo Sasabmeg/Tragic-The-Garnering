@@ -1,4 +1,6 @@
-package net.fodev.tragic;
+package net.fodev.tragic.core;
+
+import net.fodev.tragic.core.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +17,7 @@ public class Deck {
 
     private List<Card> cards;
 
-    Deck(int posX, int posY, int width, int height) {
+    public Deck(int posX, int posY, int width, int height) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
@@ -24,7 +26,7 @@ public class Deck {
         maxCards = 100;
     }
 
-    void addCard(Card card) {
+    public void addCard(Card card) {
         card.setWidth(257);
         card.setHeight(366);
         cards.add(card);
@@ -48,7 +50,7 @@ public class Deck {
         }
     }
 
-    String listCards() {
+    public String listCards() {
         return listCards(12);
     }
 
@@ -80,7 +82,7 @@ public class Deck {
          */
     }
 
-    Card popFirst() {
+    public Card popFirst() {
         return cards.remove(0);
     }
 }

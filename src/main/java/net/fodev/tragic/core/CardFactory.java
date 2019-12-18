@@ -1,4 +1,4 @@
-package net.fodev.tragic;
+package net.fodev.tragic.core;
 
 import java.util.List;
 

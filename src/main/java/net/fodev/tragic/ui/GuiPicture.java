@@ -1,4 +1,4 @@
-package net.fodev.tragic;
+package net.fodev.tragic.ui;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
@@ -62,33 +62,35 @@ public class GuiPicture extends Node {
         return super.rotate(xAngle, yAngle, zAngle);
     }
 
-    void rotate(float zAngle) {
+    public void rotate(float zAngle) {
         super.rotate(0, 0, -zAngle);
     }
 
-    void setCenterPosition(float x, float y, float z) {
+    public void setCenterPosition(float x, float y, float z) {
         setLocalTranslation(x, y, z);
     }
 
-    void setBottomLeftPosition(float x, float y, float z) {
+    public void setBottomLeftPosition(float x, float y, float z) {
         setLocalTranslation(x + sourceImageWidth * getLocalScale().x / 2, y + sourceImageHeight * getLocalScale().y / 2, z);
     }
 
-    int getSourceImageWidth() {
+    public int getSourceImageWidth() {
         return sourceImageWidth;
     }
 
-    int getSourceImageHeight() {
+    public int getSourceImageHeight() {
         return sourceImageHeight;
     }
 
     void scaleImage(float factor) {
-        picture.setWidth(sourceImageWidth * factor);
-        picture.setHeight(sourceImageHeight * factor);
-        picture.setPosition(- sourceImageWidth / 2 * factor, - sourceImageHeight / 2 * factor);
+        if (picture != null) {
+            picture.setWidth(sourceImageWidth * factor);
+            picture.setHeight(sourceImageHeight * factor);
+            picture.setPosition(- sourceImageWidth / 2 * factor, - sourceImageHeight / 2 * factor);
+        }
     }
 
-    boolean isMouseOver(Vector2f mouse) {
+    public boolean isMouseOver(Vector2f mouse) {
         float posX = this.getLocalTranslation().x;
         float posY = this.getLocalTranslation().y;
         float width = picture.getLocalScale().x;
@@ -101,7 +103,7 @@ public class GuiPicture extends Node {
         }
     }
 
-    void hide(Node guiNode) {
+    public void hide(Node guiNode) {
         if (guiNode.getChildIndex(this) >= 0) {
             guiNode.detachChild(this);
         }

@@ -1,9 +1,13 @@
-package net.fodev.tragic;
+package net.fodev.tragic.core;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
+import net.fodev.tragic.core.Card;
+import net.fodev.tragic.core.Deck;
+import net.fodev.tragic.core.Hand;
+import net.fodev.tragic.ui.GuiPicture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,7 @@ public class StartHandSelector {
     private GuiPicture background;
     private GuiPicture acceptButton;
 
-    StartHandSelector(int posX, int posY, int width, int height) {
+    public StartHandSelector(int posX, int posY, int width, int height) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
@@ -42,7 +46,7 @@ public class StartHandSelector {
         }
     }
 
-    void show(AssetManager assetManager, Node guiNode) {
+    public void show(AssetManager assetManager, Node guiNode) {
         drawBackground(assetManager, guiNode);
         showCards(assetManager, guiNode);
         drawAcceptButton(assetManager, guiNode);
@@ -59,7 +63,7 @@ public class StartHandSelector {
         acceptButton = null;
     }
 
-    void addCard(Card card) {
+    public void addCard(Card card) {
         if (card != null) {
             card.setWidth(257);
             card.setHeight(366);
@@ -97,7 +101,7 @@ public class StartHandSelector {
         }
     }
 
-    void mouseClick(Vector2f mouse, AssetManager assetManager, Node guiNode, Hand hand, Deck deck) {
+    public void mouseClick(Vector2f mouse, AssetManager assetManager, Node guiNode, Hand hand, Deck deck) {
         for (int i = 0; i < cards.size(); i++) {
             Card card = cards.get(i);
             if (card.isMouseOver(mouse)) {
@@ -120,12 +124,14 @@ public class StartHandSelector {
         }
         if (acceptButton != null && acceptButton.isMouseOver(mouse)) {
             System.out.println(String.format("Starting Hand Selector: Mouse over Accept Button at (%.0f, %.0f)", mouse.x, mouse.y));
+            System.out.println(hand.listCards());
             for (Card card : cards) {
                 hand.addCard(card);
             }
             hide(guiNode);
             cards.clear();
             hand.showCards(assetManager, guiNode);
+            System.out.println(hand.listCards());
         }
 
     }

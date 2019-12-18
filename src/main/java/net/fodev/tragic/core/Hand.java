@@ -1,7 +1,8 @@
-package net.fodev.tragic;
+package net.fodev.tragic.core;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
+import net.fodev.tragic.core.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Hand {
 
     private List<Card> cards;
 
-    Hand(int posX, int posY, int width, int height) {
+    public Hand(int posX, int posY, int width, int height) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
@@ -30,9 +31,12 @@ public class Hand {
         maxRotation = 0.40f;
     }
 
-    void addCard(Card card) {
-        card.setWidth(240);
-        card.setHeight(320);
+    public void addCard(Card card) {
+        //card.setWidth(240);
+        //card.setHeight(320);
+        card.setWidth(257);
+        card.setHeight(366);
+        card.setScale(scaleFactor);
         cards.add(card);
         recalcCardPositions();
     }
@@ -40,7 +44,7 @@ public class Hand {
     private void recalcCardPositions() {
         int spacing = 5;
 
-        //System.out.println("RECALCPOSITIONS");
+        System.out.println("HAND - recalcCardPositions()");
         float rotationScale = (float)cards.size() / maxCards;
         float minRot = minRotation * rotationScale;
         float maxRot = maxRotation * rotationScale;
@@ -87,42 +91,56 @@ public class Hand {
         }
     }
 
-    public void removeTopCard() {
-        if (!cards.isEmpty()) {
-            cards.remove(cards.size() - 1);
-        }
-    }
-    public Card getTopCard() {
-        if (!cards.isEmpty()) {
-            return cards.get(cards.size() - 1);
-        } else {
-            return null;
-        }
-    }
-
-    int getWidth() {
+    public int getWidth() {
         return width;
     }
-
-    int getHeight() {
+    public int getHeight() {
         return height;
     }
-
-    int getPosX() {
+    public int getPosX() {
         return posX;
     }
-
-    int getPosY() {
+    public int getPosY() {
         return posY;
     }
 
-    void showCards(AssetManager assetManager, Node guiNode) {
+    public void showCards(AssetManager assetManager, Node guiNode) {
+        recalcCardPositions();
         for (Card card : cards) {
+            card.setPosZ(1);
+            card.setScale(scaleFactor);
+            card.show(assetManager, guiNode);
+            card.activate(assetManager, guiNode);
+            /*
             GuiPicture cardPic = new GuiPicture(card.getName(), assetManager, card.getImageFileName(), true);
             cardPic.setCenterPosition(card.getPosX(), card.getPosY(), 1);
             cardPic.scaleImage(scaleFactor);
             cardPic.rotate(card.getRotation());
             guiNode.attachChild(cardPic);
+
+             */
         }
     }
+
+    String listCards() {
+        return listCards(12);
+    }
+
+    String listCards(int maxNameLength) {
+        String message = "(";
+        for (int i = 0; i < cards.size(); i++) {
+            if (maxNameLength == 0) {
+                message += String.format("[%d] %s", i, cards.get(i).getName());
+            } else {
+                String format = "[%d] %-" + maxNameLength + "." + maxNameLength + "s";
+                message += String.format(format, i, cards.get(i).getName());
+            }
+            if (i < cards.size() - 1) {
+                message += ", ";
+            }
+        }
+        message += ")";
+        return message;
+    }
+
 }
